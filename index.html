@@ -85,12 +85,15 @@
         <input type="tel" id="cliente-telefono" placeholder="Ej. 844 123 4567">
       </div>
 
-      <!-- Resumen Dinámico -->
+      <!-- Resumen Dinámico Completo -->
       <div class="modal-resumen">
         <p><strong>Unidad:</strong> <span id="m-unidad">K3 SEDAN</span></p>
         <p><strong>Versión:</strong> <span id="m-version">-</span></p>
+        <p><strong>Precio de Lista:</strong> <span id="m-precio">-</span></p>
         <p><strong>Enganche:</strong> <span id="m-enganche">-</span></p>
-        <p><strong>Mensualidad (48m):</strong> <span id="m-mensualidad">-</span></p>
+        <p><strong>Comisión x Apertura:</strong> <span id="m-comision">-</span></p>
+        <p><strong>Seguro Estimado:</strong> <span id="m-seguro">-</span></p>
+        <p><strong>Tasa Anual / CAT:</strong> <span id="m-tasa-cat">-</span></p>
       </div>
 
       <!-- Botones dentro del Modal -->
@@ -102,18 +105,18 @@
           ✉️ Enviar por Correo
         </button>
         <button class="btn-modal-pdf" onclick="generarPDF()">
-          <span class="pdf-icon-white">📄</span> Descargar PDF
+          <span class="pdf-icon-white">📄</span> Descargar PDF Completo
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Plantilla limpia para PDF (Oculta en pantalla, usada al exportar) -->
+  <!-- Plantilla Completa Imprimible para PDF -->
   <div id="pdf-printable-area" class="pdf-printable-area">
     <div class="pdf-header">
       <div class="pdf-brand">
         <h1>KIA MAX SALTILLO</h1>
-        <p class="pdf-subtitle">Cotización de Financiamiento</p>
+        <p class="pdf-subtitle">Cotización de Financiamiento Oficial</p>
       </div>
       <div class="pdf-meta">
         <p><strong>Fecha:</strong> <span id="pdf-fecha"></span></p>
@@ -124,7 +127,13 @@
 
     <hr class="pdf-divider">
 
-    <div class="pdf-section-title">Detalles de la Unidad</div>
+    <!-- Sección Datos del Cliente si los ingresó -->
+    <div id="pdf-cliente-container" class="pdf-cliente-box">
+      <strong>Cliente:</strong> <span id="pdf-cliente-nombre">Cliente Prospecto</span> | 
+      <strong>Teléfono:</strong> <span id="pdf-cliente-telefono">Sin registrar</span>
+    </div>
+
+    <div class="pdf-section-title">Detalles Financieros de la Unidad</div>
 
     <div class="pdf-table-details">
       <div class="pdf-row">
@@ -144,8 +153,20 @@
         <span class="pdf-value green" id="pdf-enganche">$0.00</span>
       </div>
       <div class="pdf-row">
+        <span class="pdf-label">Comisión por Apertura:</span>
+        <span class="pdf-value" id="pdf-comision">$0.00</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">Seguro Anual (Estimado):</span>
+        <span class="pdf-value" id="pdf-seguro">$0.00</span>
+      </div>
+      <div class="pdf-row">
         <span class="pdf-label">Tasa Anual:</span>
         <span class="pdf-value" id="pdf-tasa">12.99%</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">CAT Promedio Informativo:</span>
+        <span class="pdf-value" id="pdf-cat">24.5% Sin IVA</span>
       </div>
     </div>
 
@@ -153,13 +174,13 @@
       <strong>Observación:</strong> <span id="pdf-observacion">ELIGE TU ENGANCHE Y LISTO</span>
     </div>
 
-    <div class="pdf-section-title">Proyección de Mensualidades</div>
+    <div class="pdf-section-title">Proyección Completa de Mensualidades</div>
 
     <table class="pdf-table-mensualidades">
       <thead>
         <tr>
           <th>Plazo</th>
-          <th>Pago Mensual Estimado</th>
+          <th style="text-align: right;">Pago Mensual Estimado</th>
         </tr>
       </thead>
       <tbody id="pdf-tabla-body">
@@ -169,6 +190,7 @@
 
     <div class="pdf-footer-note">
       Cotización Informativa sujeta a aprobación crediticia y validación documental.<br>
+      Precios y condiciones sujetas a cambio sin previo aviso. IVA e ISAN incluidos.<br>
       KIA MAX Saltillo | Asesoría: Abel Ortiz Silva (844 806 7192)
     </div>
   </div>

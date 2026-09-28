@@ -3,6 +3,9 @@ const cotizacionesData = [
     version: "L TM",
     precio: 304900,
     tasa: "12.99%",
+    cat: "24.5% Sin IVA",
+    comisionApertura: 7622.50, // 2.5% estimación
+    seguroEstimado: 14500.00,  // Estimación anual
     observacion: "ELIGE TU ENGANCHE Y LISTOiiii",
     enganches: [
       {
@@ -26,6 +29,7 @@ const tasaMonto = document.getElementById('tasa-monto');
 const mensualidadesGrid = document.getElementById('mensualidades-grid');
 
 function formatCurrency(amount) {
+  if (!amount && amount !== 0) return "$0.00";
   return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
 }
 
@@ -82,19 +86,21 @@ function actualizarPlazos() {
 versionSelect.addEventListener('change', actualizarVersion);
 engancheSelect.addEventListener('change', actualizarPlazos);
 
-// Funciones para Modal y Redirección
+// Abrir Modal de Contacto
 function contactarWhatsApp() {
   const unidad = document.getElementById('unidad-select').value;
   const version = versionSelect.value;
   const config = cotizacionesData.find(item => item.version === version);
   const engIndex = engancheSelect.value || 0;
   const engancheSel = config.enganches[engIndex];
-  const plazo48 = engancheSel.plazos.find(p => p.meses === 48) || engancheSel.plazos[0];
 
   document.getElementById('m-unidad').textContent = unidad;
   document.getElementById('m-version').textContent = version;
+  document.getElementById('m-precio').textContent = formatCurrency(config.precio);
   document.getElementById('m-enganche').textContent = formatCurrency(engancheSel.monto);
-  document.getElementById('m-mensualidad').textContent = formatCurrency(plazo48.mensualidad);
+  document.getElementById('m-comision').textContent = formatCurrency(config.comisionApertura);
+  document.getElementById('m-seguro').textContent = formatCurrency(config.seguroEstimado);
+  document.getElementById('m-tasa-cat').textContent = `${config.tasa} / ${config.cat}`;
 
   document.getElementById('modal-contacto').classList.add('active');
 }
@@ -109,12 +115,9 @@ function enviarWhatsAppModal() {
   const unidad = document.getElementById('m-unidad').textContent;
   const version = document.getElementById('m-version').textContent;
   const enganche = document.getElementById('m-enganche').textContent;
-  const mensualidad = document.getElementById('m-mensualidad').textContent;
 
   const mensaje = `Hola Abel, mi nombre es *${nombre}* (Tel: ${telefonoCliente}).%0A` +
-                  `Me interesa la cotización del *${unidad} ${version}*:%0A` +
-                  `- Enganche: ${enganche}%0A` +
-                  `- Mensualidad estimado (48m): ${mensualidad}`;
+                  `Me interesa la cotización completa del *${unidad} ${version}* con un enganche de ${enganche}.`;
 
   window.open(`https://wa.me/528448067192?text=${mensaje}`, '_blank');
 }
@@ -125,14 +128,15 @@ function enviarCorreoModal() {
   const version = document.getElementById('m-version').textContent;
   const enganche = document.getElementById('m-enganche').textContent;
 
-  const asunto = encodeURIComponent(`Cotización ${unidad} - ${nombre}`);
+  const asunto = encodeURIComponent(`Cotización Completa ${unidad} - ${nombre}`);
   const cuerpo = encodeURIComponent(`Hola Abel,\n\nSolicito información para la unidad ${unidad} ${version}.\nEnganche: ${enganche}\n\nNombre: ${nombre}`);
   
   window.location.href = `mailto:asesor@kiamaxsaltillo.com?subject=${asunto}&body=${cuerpo}`;
 }
 
-// Generar PDF estilo documento oficial blanco
+// Generación Completa del PDF
 function generarPDF() {
+  const unidad = document.getElementById('unidad-select').value;
   const version = versionSelect.value;
   const config = cotizacionesData.find(item => item.version === version);
   const engIndex = engancheSelect.value || 0;
@@ -141,32 +145,45 @@ function generarPDF() {
   const hoy = new Date();
   const fechaTexto = hoy.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
 
+  // Datos del Cliente (si ingresó algo en el modal)
+  const clienteNombre = document.getElementById('cliente-nombre').value || "Cliente Prospecto";
+  const clienteTelefono = document.getElementById('cliente-telefono').value || "Sin registrar";
+
   document.getElementById('pdf-fecha').textContent = fechaTexto;
-  document.getElementById('pdf-modelo').textContent = document.getElementById('unidad-select').value;
+  document.getElementById('pdf-cliente-nombre').textContent = clienteNombre;
+  document.getElementById('pdf-cliente-telefono').textContent = clienteTelefono;
+
+  // Detalles financieros de la unidad
+  document.getElementById('pdf-modelo').textContent = unidad;
   document.getElementById('pdf-version').textContent = version;
   document.getElementById('pdf-precio').textContent = formatCurrency(config.precio);
   document.getElementById('pdf-enganche').textContent = formatCurrency(engancheSel.monto);
+  document.getElementById('pdf-comision').textContent = formatCurrency(config.comisionApertura);
+  document.getElementById('pdf-seguro').textContent = formatCurrency(config.seguroEstimado);
   document.getElementById('pdf-tasa').textContent = config.tasa;
+  document.getElementById('pdf-cat').textContent = config.cat;
   document.getElementById('pdf-observacion').textContent = config.observacion;
 
+  // Tabla con TODOS los plazos sin omitir ninguno
   const tbody = document.getElementById('pdf-tabla-body');
   tbody.innerHTML = '';
   engancheSel.plazos.forEach(p => {
     const tr = document.createElement('tr');
     const esRecomendado = p.meses === 48 ? ' (Recomendado)' : '';
     tr.innerHTML = `
-      <td>${p.meses} Meses${esRecomendado}</td>
-      <td>${formatCurrency(p.mensualidad)}</td>
+      <td><strong>${p.meses} Meses</strong>${esRecomendado}</td>
+      <td style="text-align: right; font-weight: bold;">${formatCurrency(p.mensualidad)}</td>
     `;
     tbody.appendChild(tr);
   });
 
+  // Exportar PDF
   const elemento = document.getElementById('pdf-printable-area');
   elemento.style.display = 'block';
 
   const opciones = {
     margin:       [10, 10, 10, 10],
-    filename:     `Cotizacion_KIA_${document.getElementById('unidad-select').value}_${version}.pdf`,
+    filename:     `Cotizacion_KIA_${unidad}_${version}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  { scale: 2, backgroundColor: '#ffffff', useCORS: true },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
