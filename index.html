@@ -3,49 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotiza tu Auto - KIA MAX SALTILLO</title>
+  <title>Cotizador KIA MAX Saltillo</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Meta Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    
-    fbq('init', '1597860704877766'); // Reemplaza con tu ID real de Meta Pixel
-    fbq('track', 'PageView');
-  </script>
-  <noscript>
-    <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=TU_PIXEL_ID&ev=PageView&noscript=1" />
-  </noscript>
-  <!-- End Meta Pixel Code -->
+  <!-- Librería html2pdf para la exportación -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-  <!-- Header fuera del contenedor -->
-  <div class="header-cotizador">
-    <span class="agencia-tag">KIA MAX SALTILLO</span>
-    <h1>Tu cotización</h1>
-    <p class="asesor-info">Asesor: Abel Ortiz Silva | Cel: 844 806 7192</p>
-  </div>
-
   <div class="cotizador-container">
-    
-    <div class="form-group">
-      <label for="tipo-select">TIPO DE VEHÍCULO</label>
-      <select id="tipo-select">
-        <option value="AUTOMOVIL">AUTOMÓVIL</option>
-      </select>
+    <div class="header-cotizador">
+      <div class="kia-logo">KIA MAX SALTILLO</div>
+      <div class="header-title">Tu cotización</div>
     </div>
 
+    <!-- Formulario / Selectores -->
     <div class="form-group">
-      <label for="unidad-select">UNIDAD</label>
+      <label for="unidad-select">AUTOMÓVIL</label>
       <select id="unidad-select">
         <option value="K3 SEDAN">K3 SEDAN</option>
       </select>
@@ -53,62 +26,152 @@
 
     <div class="form-group">
       <label for="version-select">VERSIÓN</label>
-      <select id="version-select">
-        <option value="L TM">L TM</option>
-        <option value="LX TM">LX TM</option>
-      </select>
+      <select id="version-select"></select>
     </div>
 
-    <!-- Precio Lista -->
     <div class="precio-header">
-      <span>Precio de Lista:</span>
-      <strong id="precio-val">$304,900.00</strong>
+      <span class="precio-label">PRECIO DE LISTA</span>
+      <span class="precio-monto" id="precio-monto">$0.00</span>
     </div>
 
-    <!-- Observación / Alerta -->
     <div class="observacion-box" id="observacion-box">
-      <span class="info-icon">ⓘ</span>
-      <span id="observacion-txt">ELIGE TU ENGANCHE Y LISTO!</span>
+      <!-- Mensaje dinámico de observación -->
     </div>
 
-    <!-- Enganche -->
     <div class="form-group">
-      <label for="enganche-select">ENGANCHE</label>
-      <select id="enganche-select">
-        <!-- Opciones dinámicas -->
-      </select>
+      <label for="enganche-select">ENGANCHE SOLICITADO</label>
+      <select id="enganche-select"></select>
     </div>
 
-    <!-- Tasa Anual Aplicada -->
     <div class="tasa-box">
-      <span>Tasa Anual Aplicada:</span>
-      <strong id="tasa-val">12.99%</strong>
+      <span>TASA ANUAL:</span>
+      <strong id="tasa-monto">12.99%</strong>
     </div>
 
-    <!-- Bloque de Mensualidades -->
     <div class="mensualidades-section">
-      <label class="section-label">MENSUALIDADES</label>
-      <div id="lista-mensualidades" class="lista-mensualidades">
-        <!-- Filas dinámicas -->
+      <h3>Proyección de Mensualidades</h3>
+      <div class="mensualidades-grid" id="mensualidades-grid">
+        <!-- Tarjetas dinámicas de plazos -->
       </div>
     </div>
 
-    <!-- Botones de Acción -->
+    <!-- Acciones Principales -->
     <div class="acciones-container">
-      <button class="btn-contacto" id="btn-contacto" onclick="contactarWhatsApp()">
-        ¿Deseas más información? Contáctanos &rsaquo;
+      <button class="btn-contacto" onclick="contactarWhatsApp()">
+        💬 ¿Deseas más información? Contáctanos
       </button>
-      <button class="btn-pdf" id="btn-pdf" onclick="window.print()">
-        📄 Descargar Cotización (PDF)
+      <button class="btn-pdf" id="btn-pdf" onclick="generarPDF()">
+        <span class="pdf-icon">📄</span> Descargar Cotización (PDF)
       </button>
+      <p class="legales-texto">Precio y mensualidades sujetas a aprobación de crédito. IVA e ISAN incluidos.</p>
     </div>
-
   </div>
 
-  <!-- Pie Legal -->
-  <footer class="footer-legal">
-    Precios y mensualidades sujetos a aprobación de crédito. KIA MAX Saltillo.
-  </footer>
+  <!-- Ventana Modal de Contacto -->
+  <div id="modal-contacto" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="cerrarModal()">&times;</button>
+      
+      <h2>Contactar Asesor</h2>
+      <p class="modal-subtitle">Envía tu cotización directamente a Abel Ortiz Silva</p>
+
+      <div class="modal-form-group">
+        <label for="cliente-nombre">Tu Nombre Completo</label>
+        <input type="text" id="cliente-nombre" placeholder="Ej. Juan Pérez">
+      </div>
+
+      <div class="modal-form-group">
+        <label for="cliente-telefono">Tu Teléfono</label>
+        <input type="tel" id="cliente-telefono" placeholder="Ej. 844 123 4567">
+      </div>
+
+      <!-- Resumen Dinámico -->
+      <div class="modal-resumen">
+        <p><strong>Unidad:</strong> <span id="m-unidad">K3 SEDAN</span></p>
+        <p><strong>Versión:</strong> <span id="m-version">-</span></p>
+        <p><strong>Enganche:</strong> <span id="m-enganche">-</span></p>
+        <p><strong>Mensualidad (48m):</strong> <span id="m-mensualidad">-</span></p>
+      </div>
+
+      <!-- Botones dentro del Modal -->
+      <div class="modal-acciones">
+        <button class="btn-modal-ws" onclick="enviarWhatsAppModal()">
+          💬 Enviar por WhatsApp
+        </button>
+        <button class="btn-modal-mail" onclick="enviarCorreoModal()">
+          ✉️ Enviar por Correo
+        </button>
+        <button class="btn-modal-pdf" onclick="generarPDF()">
+          <span class="pdf-icon-white">📄</span> Descargar PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plantilla limpia para PDF (Oculta en pantalla, usada al exportar) -->
+  <div id="pdf-printable-area" class="pdf-printable-area">
+    <div class="pdf-header">
+      <div class="pdf-brand">
+        <h1>KIA MAX SALTILLO</h1>
+        <p class="pdf-subtitle">Cotización de Financiamiento</p>
+      </div>
+      <div class="pdf-meta">
+        <p><strong>Fecha:</strong> <span id="pdf-fecha"></span></p>
+        <p><strong>Asesor:</strong> Abel Ortiz Silva</p>
+        <p><strong>Teléfono:</strong> 844 806 7192</p>
+      </div>
+    </div>
+
+    <hr class="pdf-divider">
+
+    <div class="pdf-section-title">Detalles de la Unidad</div>
+
+    <div class="pdf-table-details">
+      <div class="pdf-row">
+        <span class="pdf-label">Vehículo / Modelo:</span>
+        <span class="pdf-value" id="pdf-modelo">K3 SEDAN</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">Versión:</span>
+        <span class="pdf-value" id="pdf-version">-</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">Precio de Lista:</span>
+        <span class="pdf-value bold" id="pdf-precio">$0.00</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">Enganche Solicitado:</span>
+        <span class="pdf-value green" id="pdf-enganche">$0.00</span>
+      </div>
+      <div class="pdf-row">
+        <span class="pdf-label">Tasa Anual:</span>
+        <span class="pdf-value" id="pdf-tasa">12.99%</span>
+      </div>
+    </div>
+
+    <div class="pdf-alert-box" id="pdf-alert-box">
+      <strong>Observación:</strong> <span id="pdf-observacion">ELIGE TU ENGANCHE Y LISTO</span>
+    </div>
+
+    <div class="pdf-section-title">Proyección de Mensualidades</div>
+
+    <table class="pdf-table-mensualidades">
+      <thead>
+        <tr>
+          <th>Plazo</th>
+          <th>Pago Mensual Estimado</th>
+        </tr>
+      </thead>
+      <tbody id="pdf-tabla-body">
+        <!-- Filas de plazos -->
+      </tbody>
+    </table>
+
+    <div class="pdf-footer-note">
+      Cotización Informativa sujeta a aprobación crediticia y validación documental.<br>
+      KIA MAX Saltillo | Asesoría: Abel Ortiz Silva (844 806 7192)
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
