@@ -1,80 +1,115 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizador de Autos - K3 SEDAN</title>
-  <link rel="stylesheet" href="styles.css">
-   <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1597860704877766');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
- </head>
+  <title>Cotiza tu Auto - KIA MAX SALTILLO</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', 'TU_PIXEL_ID'); // Reemplaza con tu ID real de Meta Pixel
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=TU_PIXEL_ID&ev=PageView&noscript=1" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
+</head>
 <body>
 
-  <div class="cotizador-container">
-    <h2>Cotiza tu Auto - K3 SEDAN</h2>
-    
-    <!-- Filtros de selección -->
-    <div class="form-group">
-      <label for="version-select">Versión:</label>
-      <select id="version-select">
-        <option value="L TM">K3 SEDAN - L TM</option>
-        <option value="LX TM">K3 SEDAN - LX TM</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="enganche-select">Selecciona tu Enganche:</label>
-      <select id="enganche-select">
-        <!-- Opciones cargadas dinámicamente -->
-      </select>
-    </div>
-
-    <!-- Resumen de información -->
-    <div class="precio-header">
-      <span>Precio Lista:</span>
-      <strong id="precio-val">$0.00</strong>
-    </div>
-
-    <div class="info-badges">
-      <span class="badge">Tasa: <strong id="tasa-val">0%</strong></span>
-      <span class="badge">Mantenimiento: <strong id="mantenimiento-val">No</strong></span>
-    </div>
-
-    <!-- Tabla de Plazos y Mensualidades -->
-    <h3>Elige tu plazo y mensualidad</h3>
-    <table class="tabla-cotizacion">
-      <thead>
-        <tr>
-          <th>Plazo</th>
-          <th>Mensualidad</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-plazos-body">
-        <!-- Se llena con JS -->
-      </tbody>
-    </table>
-
-    <div class="observacion-box" id="observacion-box">
-      <strong>Observación:</strong> <span id="observacion-txt">ELIGE TU ENGANCHE Y LISTOiiii</span>
-    </div>
+  <!-- Header fuera del contenedor -->
+  <div class="header-cotizador">
+    <span class="agencia-tag">KIA MAX SALTILLO</span>
+    <h1>Tu cotización</h1>
+    <p class="asesor-info">Asesor: Abel Ortiz Silva | Cel: 844 806 7192</p>
   </div>
 
-  <script src="app.js"></script>
+  <div class="cotizador-container">
+    
+    <div class="form-group">
+      <label for="tipo-select">TIPO DE VEHÍCULO</label>
+      <select id="tipo-select">
+        <option value="AUTOMOVIL">AUTOMÓVIL</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="unidad-select">UNIDAD</label>
+      <select id="unidad-select">
+        <option value="K3 SEDAN">K3 SEDAN</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="version-select">VERSIÓN</label>
+      <select id="version-select">
+        <option value="L TM">L TM</option>
+        <option value="LX TM">LX TM</option>
+      </select>
+    </div>
+
+    <!-- Precio Lista -->
+    <div class="precio-header">
+      <span>Precio de Lista:</span>
+      <strong id="precio-val">$304,900.00</strong>
+    </div>
+
+    <!-- Observación / Alerta -->
+    <div class="observacion-box" id="observacion-box">
+      <span class="info-icon">ⓘ</span>
+      <span id="observacion-txt">ELIGE TU ENGANCHE Y LISTO!</span>
+    </div>
+
+    <!-- Enganche -->
+    <div class="form-group">
+      <label for="enganche-select">ENGANCHE</label>
+      <select id="enganche-select">
+        <!-- Opciones dinámicas -->
+      </select>
+    </div>
+
+    <!-- Tasa Anual Aplicada -->
+    <div class="tasa-box">
+      <span>Tasa Anual Aplicada:</span>
+      <strong id="tasa-val">12.99%</strong>
+    </div>
+
+    <!-- Bloque de Mensualidades -->
+    <div class="mensualidades-section">
+      <label class="section-label">MENSUALIDADES</label>
+      <div id="lista-mensualidades" class="lista-mensualidades">
+        <!-- Filas dinámicas -->
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="acciones-container">
+      <button class="btn-contacto" id="btn-contacto" onclick="contactarWhatsApp()">
+        ¿Deseas más información? Contáctanos &rsaquo;
+      </button>
+      <button class="btn-pdf" id="btn-pdf" onclick="window.print()">
+        📄 Descargar Cotización (PDF)
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Pie Legal -->
+  <footer class="footer-legal">
+    Precios y mensualidades sujetos a aprobación de crédito. KIA MAX Saltillo.
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

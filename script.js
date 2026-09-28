@@ -1,4 +1,3 @@
-// Datos extraídos de tu hoja de cálculo
 const cotizacionesData = [
   {
     modelo: "K3 SEDAN",
@@ -57,26 +56,22 @@ const cotizacionesData = [
   }
 ];
 
-// Formateador de moneda
 const formatCurrency = (val) => {
   return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(val);
 };
 
-// Referencias DOM
 const versionSelect = document.getElementById('version-select');
 const engancheSelect = document.getElementById('enganche-select');
 const precioVal = document.getElementById('precio-val');
 const tasaVal = document.getElementById('tasa-val');
-const mantenimientoVal = document.getElementById('mantenimiento-val');
 const observacionTxt = document.getElementById('observacion-txt');
-const tablaBody = document.getElementById('tabla-plazos-body');
+const listaMensualidades = document.getElementById('lista-mensualidades');
 
-// Carga inicial
 document.addEventListener('DOMContentLoaded', () => {
   actualizarVersiones();
 
   versionSelect.addEventListener('change', actualizarVersiones);
-  engancheSelect.addEventListener('change', renderizarTabla);
+  engancheSelect.addEventListener('change', renderizarMensualidades);
 });
 
 function actualizarVersiones() {
@@ -85,13 +80,10 @@ function actualizarVersiones() {
 
   if (!config) return;
 
-  // Actualiza info general
   precioVal.textContent = formatCurrency(config.precio);
   tasaVal.textContent = config.tasa;
-  mantenimientoVal.textContent = config.mantenimiento;
   observacionTxt.textContent = config.observacion;
 
-  // Carga opciones de enganche
   engancheSelect.innerHTML = '';
   config.enganches.forEach((eng, index) => {
     const opt = document.createElement('option');
@@ -100,51 +92,44 @@ function actualizarVersiones() {
     engancheSelect.appendChild(opt);
   });
 
-  renderizarTabla();
+  renderizarMensualidades();
 }
 
-function renderizarTabla() {
+function renderizarMensualidades() {
   const versionSel = versionSelect.value;
   const config = cotizacionesData.find(item => item.version === versionSel);
   const engIndex = engancheSelect.value || 0;
   const engancheSel = config.enganches[engIndex];
 
-  tablaBody.innerHTML = '';
+  listaMensualidades.innerHTML = '';
 
   if (!engancheSel) return;
 
   engancheSel.plazos.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${p.meses} meses</strong></td>
-      <td class="mensualidad">${formatCurrency(p.mensualidad)}</td>
-      <td>
-        <button class="btn-solicitar" onclick="solicitarCotizacion('${config.version}', '${engancheSel.monto}', '${p.meses}', '${p.mensualidad}')">
-          Solicitar
-        </button>
-      </td>
+    const row = document.createElement('div');
+    row.className = 'm-row';
+    row.innerHTML = `
+      <span class="m-meses">${p.meses} meses</span>
+      <span class="m-monto">${formatCurrency(p.mensualidad)}</span>
     `;
-    tablaBody.appendChild(tr);
+    listaMensualidades.appendChild(row);
   });
 }
 
-// Envío a WhatsApp + Evento Meta Pixel
-function solicitarCotizacion(version, enganche, meses, mensualidad) {
-  // Disparar evento de Meta Pixel
+function contactarWhatsApp() {
+  const version = versionSelect.value;
+  const config = cotizacionesData.find(item => item.version === version);
+  const engIndex = engancheSelect.value || 0;
+  const engancheSel = config.enganches[engIndex];
+
   if (typeof fbq !== 'undefined') {
-    fbq('track', 'Lead', {
-      content_name: `K3 SEDAN ${version}`,
-      value: mensualidad,
-      currency: 'MXN'
-    });
+    fbq('track', 'Lead', { content_name: `K3 SEDAN ${version}` });
   }
 
-  // Redirigir a WhatsApp
-  const mensaje = `Hola, me interesa la cotización del K3 SEDAN ${version}%0A` +
-                  `- Enganche: ${formatCurrency(enganche)}%0A` +
-                  `- Plazo: ${meses} meses%0A` +
-                  `- Mensualidad: ${formatCurrency(mensualidad)}`;
+  const mensaje = `Hola, me interesa más información de la cotización del K3 SEDAN ${version}:%0A` +
+                  `- Enganche: ${formatCurrency(engancheSel.monto)}%0A` +
+                  `- Tasa: ${config.tasa}`;
   
-  const telefono = "1234567890"; // Reemplaza con tu WhatsApp
+  const telefono = "528448067192";
   window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
 }
