@@ -1,0 +1,80 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador de Autos - K3 SEDAN</title>
+  <link rel="stylesheet" href="styles.css">
+   <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1597860704877766');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+ </head>
+<body>
+
+  <div class="cotizador-container">
+    <h2>Cotiza tu Auto - K3 SEDAN</h2>
+    
+    <!-- Filtros de selección -->
+    <div class="form-group">
+      <label for="version-select">Versión:</label>
+      <select id="version-select">
+        <option value="L TM">K3 SEDAN - L TM</option>
+        <option value="LX TM">K3 SEDAN - LX TM</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="enganche-select">Selecciona tu Enganche:</label>
+      <select id="enganche-select">
+        <!-- Opciones cargadas dinámicamente -->
+      </select>
+    </div>
+
+    <!-- Resumen de información -->
+    <div class="precio-header">
+      <span>Precio Lista:</span>
+      <strong id="precio-val">$0.00</strong>
+    </div>
+
+    <div class="info-badges">
+      <span class="badge">Tasa: <strong id="tasa-val">0%</strong></span>
+      <span class="badge">Mantenimiento: <strong id="mantenimiento-val">No</strong></span>
+    </div>
+
+    <!-- Tabla de Plazos y Mensualidades -->
+    <h3>Elige tu plazo y mensualidad</h3>
+    <table class="tabla-cotizacion">
+      <thead>
+        <tr>
+          <th>Plazo</th>
+          <th>Mensualidad</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-plazos-body">
+        <!-- Se llena con JS -->
+      </tbody>
+    </table>
+
+    <div class="observacion-box" id="observacion-box">
+      <strong>Observación:</strong> <span id="observacion-txt">ELIGE TU ENGANCHE Y LISTOiiii</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
