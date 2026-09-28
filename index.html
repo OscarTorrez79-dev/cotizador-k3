@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizador KIA MAX Saltillo</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Librería html2pdf para la exportación -->
+  <!-- Librería html2pdf para exportación -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="observacion-box" id="observacion-box">
-      <!-- Mensaje dinámico de observación -->
+      <!-- Mensaje dinámico -->
     </div>
 
     <div class="form-group">
@@ -51,7 +51,7 @@
     <div class="mensualidades-section">
       <h3>Proyección de Mensualidades</h3>
       <div class="mensualidades-grid" id="mensualidades-grid">
-        <!-- Tarjetas dinámicas de plazos -->
+        <!-- Tarjetas dinámicas -->
       </div>
     </div>
 
@@ -85,18 +85,15 @@
         <input type="tel" id="cliente-telefono" placeholder="Ej. 844 123 4567">
       </div>
 
-      <!-- Resumen Dinámico Completo -->
+      <!-- Resumen Dinámico -->
       <div class="modal-resumen">
         <p><strong>Unidad:</strong> <span id="m-unidad">K3 SEDAN</span></p>
         <p><strong>Versión:</strong> <span id="m-version">-</span></p>
         <p><strong>Precio de Lista:</strong> <span id="m-precio">-</span></p>
         <p><strong>Enganche:</strong> <span id="m-enganche">-</span></p>
-        <p><strong>Comisión x Apertura:</strong> <span id="m-comision">-</span></p>
-        <p><strong>Seguro Estimado:</strong> <span id="m-seguro">-</span></p>
-        <p><strong>Tasa Anual / CAT:</strong> <span id="m-tasa-cat">-</span></p>
+        <p><strong>Tasa Anual:</strong> <span id="m-tasa">-</span></p>
       </div>
 
-      <!-- Botones dentro del Modal -->
       <div class="modal-acciones">
         <button class="btn-modal-ws" onclick="enviarWhatsAppModal()">
           💬 Enviar por WhatsApp
@@ -105,18 +102,18 @@
           ✉️ Enviar por Correo
         </button>
         <button class="btn-modal-pdf" onclick="generarPDF()">
-          <span class="pdf-icon-white">📄</span> Descargar PDF Completo
+          <span class="pdf-icon-white">📄</span> Descargar PDF
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Plantilla Completa Imprimible para PDF -->
+  <!-- Plantilla de 1 sola Hoja para PDF (Ajustada) -->
   <div id="pdf-printable-area" class="pdf-printable-area">
     <div class="pdf-header">
       <div class="pdf-brand">
         <h1>KIA MAX SALTILLO</h1>
-        <p class="pdf-subtitle">Cotización de Financiamiento Oficial</p>
+        <p class="pdf-subtitle">Cotización de Financiamiento</p>
       </div>
       <div class="pdf-meta">
         <p><strong>Fecha:</strong> <span id="pdf-fecha"></span></p>
@@ -127,13 +124,7 @@
 
     <hr class="pdf-divider">
 
-    <!-- Sección Datos del Cliente si los ingresó -->
-    <div id="pdf-cliente-container" class="pdf-cliente-box">
-      <strong>Cliente:</strong> <span id="pdf-cliente-nombre">Cliente Prospecto</span> | 
-      <strong>Teléfono:</strong> <span id="pdf-cliente-telefono">Sin registrar</span>
-    </div>
-
-    <div class="pdf-section-title">Detalles Financieros de la Unidad</div>
+    <div class="pdf-section-title">Detalles de la Unidad</div>
 
     <div class="pdf-table-details">
       <div class="pdf-row">
@@ -153,28 +144,16 @@
         <span class="pdf-value green" id="pdf-enganche">$0.00</span>
       </div>
       <div class="pdf-row">
-        <span class="pdf-label">Comisión por Apertura:</span>
-        <span class="pdf-value" id="pdf-comision">$0.00</span>
-      </div>
-      <div class="pdf-row">
-        <span class="pdf-label">Seguro Anual (Estimado):</span>
-        <span class="pdf-value" id="pdf-seguro">$0.00</span>
-      </div>
-      <div class="pdf-row">
         <span class="pdf-label">Tasa Anual:</span>
         <span class="pdf-value" id="pdf-tasa">12.99%</span>
       </div>
-      <div class="pdf-row">
-        <span class="pdf-label">CAT Promedio Informativo:</span>
-        <span class="pdf-value" id="pdf-cat">24.5% Sin IVA</span>
-      </div>
     </div>
 
-    <div class="pdf-alert-box" id="pdf-alert-box">
+    <div class="pdf-alert-box">
       <strong>Observación:</strong> <span id="pdf-observacion">ELIGE TU ENGANCHE Y LISTO</span>
     </div>
 
-    <div class="pdf-section-title">Proyección Completa de Mensualidades</div>
+    <div class="pdf-section-title">Proyección de Mensualidades</div>
 
     <table class="pdf-table-mensualidades">
       <thead>
@@ -189,8 +168,7 @@
     </table>
 
     <div class="pdf-footer-note">
-      Cotización Informativa sujeta a aprobación crediticia y validación documental.<br>
-      Precios y condiciones sujetas a cambio sin previo aviso. IVA e ISAN incluidos.<br>
+      Cotización informativa sujeta a aprobación crediticia y validación documental.<br>
       KIA MAX Saltillo | Asesoría: Abel Ortiz Silva (844 806 7192)
     </div>
   </div>
