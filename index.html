@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizador KIA MAX Saltillo</title>
+  <title>Cotizador KIA</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Librería html2pdf para exportación -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <!-- Meta Pixel Code -->
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -28,153 +27,147 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
 <body>
 
   <div class="cotizador-container">
-      <div class="header-cotizador">
+    <div class="header-cotizador">
       <div class="kia-logo">KIA MAX SALTILLO</div>
       <div class="header-title">Tu cotización</div>
       <div class="asesor-info">Asesor: Abel Ortiz Silva | Cel: 844 806 7192</div>
     </div>
-   
 
-    <!-- Formulario / Selectores -->
     <div class="form-group">
-      <label for="unidad-select">AUTOMÓVIL</label>
+      <label>TIPO DE VEHÍCULO</label>
       <select id="unidad-select">
+        <option value="AUTOMÓVIL">AUTOMÓVIL</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>UNIDAD</label>
+      <select id="modelo-select">
         <option value="K3 SEDAN">K3 SEDAN</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="version-select">VERSIÓN</label>
-      <select id="version-select"></select>
+      <label>VERSIÓN</label>
+      <select id="version-select">
+        <option value="">Cargando versiones...</option>
+      </select>
     </div>
 
-    <div class="precio-header">
-      <span class="precio-label">PRECIO DE LISTA</span>
-      <span class="precio-monto" id="precio-monto">$0.00</span>
+    <div class="precio-box">
+      <span>Precio de Lista:</span>
+      <span id="precio-monto">$0.00</span>
     </div>
 
-    <div class="observacion-box" id="observacion-box">
-      <!-- Mensaje dinámico -->
+    <div class="observacion-banner" id="observacion-box">
+      <span class="icon">⚠️</span> <span id="observacion-texto">ELIGE TU ENGANCHE Y LISTO¡¡¡¡</span>
     </div>
 
     <div class="form-group">
-      <label for="enganche-select">ENGANCHE SOLICITADO</label>
-      <select id="enganche-select"></select>
+      <label>ENGANCHE</label>
+      <select id="enganche-select">
+        <option value="">Cargando enganches...</option>
+      </select>
     </div>
 
     <div class="tasa-box">
-      <span>TASA ANUAL:</span>
-      <strong id="tasa-monto">12.99%</strong>
+      <span>Tasa Anual:</span>
+      <span id="tasa-monto">12.99%</span>
     </div>
 
-    <div class="mensualidades-section">
-      <h3>Proyección de Mensualidades</h3>
-      <div class="mensualidades-grid" id="mensualidades-grid">
-        <!-- Tarjetas dinámicas -->
-      </div>
+    <div class="seccion-titulo">Proyección de Mensualidades</div>
+    
+    <div class="mensualidades-grid" id="mensualidades-grid">
+      <!-- Tarjetas cargadas dinámicamente -->
     </div>
 
-    <!-- Acciones Principales -->
     <div class="acciones-container">
-      <button class="btn-contacto" onclick="contactarWhatsApp()">
-        💬 ¿Deseas más información? Contáctanos
+      <button class="btn btn-pdf" onclick="generarPDF()">
+        📄 Descargar PDF
       </button>
-      <button class="btn-pdf" id="btn-pdf" onclick="generarPDF()">
-        <span class="pdf-icon">📄</span> Descargar Cotización (PDF)
+      <button class="btn btn-whatsapp" onclick="contactarWhatsApp()">
+        💬 Contactar por WhatsApp
       </button>
-      <p class="legales-texto">Precio y mensualidades sujetas a aprobación de crédito. IVA e ISAN incluidos.</p>
     </div>
   </div>
 
-  <!-- Ventana Modal de Contacto -->
-  <div id="modal-contacto" class="modal-overlay">
-    <div class="modal-content">
+  <!-- Modal Contacto -->
+  <div class="modal-overlay" id="modal-contacto">
+    <div class="modal-card">
       <button class="modal-close" onclick="cerrarModal()">&times;</button>
+      <h3>Enviar Cotización</h3>
+      <p style="font-size: 0.85rem; color: #aaa; margin-top: 4px;">Selecciona una opción para contactar a tu asesor:</p>
       
-      <h2>Contactar Asesor</h2>
-      <p class="modal-subtitle">Envía tu cotización directamente a Abel Ortiz Silva</p>
-
-      <div class="modal-form-group">
-        <label for="cliente-nombre">Tu Nombre Completo</label>
-        <input type="text" id="cliente-nombre" placeholder="Ej. Juan Pérez">
+      <div class="resumen-modal">
+        <p><strong>Unidad:</strong> <span id="m-unidad">K3 SEDAN</span> - <span id="m-version"></span></p>
+        <p><strong>Precio:</strong> <span id="m-precio"></span></p>
+        <p><strong>Enganche:</strong> <span id="m-enganche"></span></p>
+        <p><strong>Tasa:</strong> <span id="m-tasa"></span></p>
       </div>
 
-      <div class="modal-form-group">
-        <label for="cliente-telefono">Tu Teléfono</label>
-        <input type="tel" id="cliente-telefono" placeholder="Ej. 844 123 4567">
+      <div class="form-group">
+        <label>Tu Nombre:</label>
+        <input type="text" id="cliente-nombre" placeholder="Escribe tu nombre">
+      </div>
+      
+      <div class="form-group">
+        <label>Tu Teléfono:</label>
+        <input type="tel" id="cliente-telefono" placeholder="Escribe tu número">
       </div>
 
-      <!-- Resumen Dinámico -->
-      <div class="modal-resumen">
-        <p><strong>Unidad:</strong> <span id="m-unidad">K3 SEDAN</span></p>
-        <p><strong>Versión:</strong> <span id="m-version">-</span></p>
-        <p><strong>Precio de Lista:</strong> <span id="m-precio">-</span></p>
-        <p><strong>Enganche:</strong> <span id="m-enganche">-</span></p>
-        <p><strong>Tasa Anual:</strong> <span id="m-tasa">-</span></p>
-      </div>
-
-      <div class="modal-acciones">
-        <button class="btn-modal-ws" onclick="enviarWhatsAppModal()">
-          💬 Enviar por WhatsApp
-        </button>
-        <button class="btn-modal-mail" onclick="enviarCorreoModal()">
-          ✉️ Enviar por Correo
-        </button>
-        <button class="btn-modal-pdf" onclick="generarPDF()">
-          <span class="pdf-icon-white">📄</span> Descargar PDF
-        </button>
+      <div class="modal-buttons">
+        <button class="btn btn-whatsapp" onclick="enviarWhatsAppModal()">Enviar por WhatsApp</button>
+        <button class="btn btn-email" onclick="enviarCorreoModal()">Enviar por Correo</button>
       </div>
     </div>
   </div>
 
-  <!-- Plantilla de 1 sola Hoja para PDF (Ajustada) -->
+  <!-- Plantilla A4 Imprimible Oculta para PDF (Ajustada a 1 Hoja) -->
   <div id="pdf-printable-area" class="pdf-printable-area">
     <div class="pdf-header">
-      <div class="pdf-brand">
-        <h1>KIA MAX SALTILLO</h1>
-        <p class="pdf-subtitle">Cotización de Financiamiento</p>
+      <div>
+        <h2 style="margin:0; font-size: 20px; font-weight: 900; letter-spacing: 1px; color: #000;">KIA MAX SALTILLO</h2>
+        <p style="margin:2px 0; font-size: 13px; color: #555;">Cotización de Financiamiento</p>
       </div>
-      <div class="pdf-meta">
-        <p><strong>Fecha:</strong> <span id="pdf-fecha"></span></p>
-        <p><strong>Asesor:</strong> Abel Ortiz Silva</p>
-        <p><strong>Teléfono:</strong> 844 806 7192</p>
+      <div style="text-align: right; font-size: 11px; color: #333;">
+        <p style="margin:0;"><strong>Fecha:</strong> <span id="pdf-fecha"></span></p>
+        <p style="margin:2px 0;"><strong>Asesor:</strong> Abel Ortiz Silva</p>
+        <p style="margin:0;"><strong>Teléfono:</strong> 844 806 7192</p>
       </div>
     </div>
 
     <hr class="pdf-divider">
 
-    <div class="pdf-section-title">Detalles de la Unidad</div>
+    <h3 class="pdf-seccion-title">Detalles de la Unidad</h3>
+    <table class="pdf-table-details">
+      <tr>
+        <td><strong>Vehículo / Modelo:</strong></td>
+        <td style="text-align: right;" id="pdf-modelo">K3 SEDAN</td>
+      </tr>
+      <tr>
+        <td><strong>Versión:</strong></td>
+        <td style="text-align: right;" id="pdf-version">-</td>
+      </tr>
+      <tr>
+        <td><strong>Precio de Lista:</strong></td>
+        <td style="text-align: right;" id="pdf-precio">-</td>
+      </tr>
+      <tr>
+        <td><strong>Enganche Solicitado:</strong></td>
+        <td style="text-align: right; color: #2e7d32; font-weight: bold;" id="pdf-enganche">-</td>
+      </tr>
+      <tr>
+        <td><strong>Tasa Anual:</strong></td>
+        <td style="text-align: right;" id="pdf-tasa">12.99%</td>
+      </tr>
+    </table>
 
-    <div class="pdf-table-details">
-      <div class="pdf-row">
-        <span class="pdf-label">Vehículo / Modelo:</span>
-        <span class="pdf-value" id="pdf-modelo">K3 SEDAN</span>
-      </div>
-      <div class="pdf-row">
-        <span class="pdf-label">Versión:</span>
-        <span class="pdf-value" id="pdf-version">-</span>
-      </div>
-      <div class="pdf-row">
-        <span class="pdf-label">Precio de Lista:</span>
-        <span class="pdf-value bold" id="pdf-precio">$0.00</span>
-      </div>
-      <div class="pdf-row">
-        <span class="pdf-label">Enganche Solicitado:</span>
-        <span class="pdf-value green" id="pdf-enganche">$0.00</span>
-      </div>
-      <div class="pdf-row">
-        <span class="pdf-label">Tasa Anual:</span>
-        <span class="pdf-value" id="pdf-tasa">12.99%</span>
-      </div>
+    <div class="pdf-observacion-box">
+      <strong>Observación:</strong> <span id="pdf-observacion">ELIGE TU ENGANCHE Y LISTO¡¡¡¡</span>
     </div>
 
-    <div class="pdf-alert-box">
-      <strong>Observación:</strong> <span id="pdf-observacion">ELIGE TU ENGANCHE Y LISTO</span>
-    </div>
-
-    <div class="pdf-section-title">Proyección de Mensualidades</div>
-
-    <table class="pdf-table-mensualidades">
+    <h3 class="pdf-seccion-title">Proyección de Mensualidades</h3>
+    <table class="pdf-table-plazos">
       <thead>
         <tr>
           <th>Plazo</th>
@@ -182,14 +175,9 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
         </tr>
       </thead>
       <tbody id="pdf-tabla-body">
-        <!-- Filas de plazos -->
+        <!-- Rellenado mediante JS -->
       </tbody>
     </table>
-
-    <div class="pdf-footer-note">
-      Cotización informativa sujeta a aprobación crediticia y validación documental.<br>
-      KIA MAX Saltillo | Asesoría: Abel Ortiz Silva (844 806 7192)
-    </div>
   </div>
 
   <script src="script.js"></script>
