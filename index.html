@@ -3,34 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizador KIA</title>
-    <!-- Hoja de estilos -->
+    <title>Cotizador KIA MAX SALTILLO</title>
+    <!-- Hoja de estilos CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Iconos de FontAwesome -->
+    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Librería para exportar a PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1597860704877766');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
 </head>
 <body>
 
-    <!-- ==================== UI PRINCIPAL (TEMA OSCURO) ==================== -->
+    <!-- ==================== UI PRINCIPAL DE LA APP ==================== -->
     <div class="app-wrapper">
         <header class="app-header">
             <h4 class="brand-title">KIA MAX SALTILLO</h4>
@@ -39,41 +20,36 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
         </header>
 
         <div class="card-container">
-    <!-- Sección Vehículo -->
-    <div class="form-group">
-        <label for="select-tipo">TIPO DE VEHÍCULO</label>
-        <select id="select-tipo" class="interactive-input">
-            <!-- Cargado dinámicamente por JS / Google Sheets -->
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="select-unidad">UNIDAD</label>
-        <select id="select-unidad" class="interactive-input">
-            <!-- Cargado dinámicamente por JS / Google Sheets -->
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="select-version">VERSIÓN</label>
-        <select id="select-version" class="interactive-input">
-            <!-- Cargado dinámicamente por JS / Google Sheets -->
-        </select>
-    </div>
+            <!-- Selección de Vehículo -->
+            <div class="form-group">
+                <label for="select-tipo">TIPO DE VEHÍCULO</label>
+                <select id="select-tipo" class="interactive-input"></select>
+            </div>
 
-            <!-- Precios -->
+            <div class="form-group">
+                <label for="select-unidad">UNIDAD</label>
+                <select id="select-unidad" class="interactive-input"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="select-version">VERSIÓN</label>
+                <select id="select-version" class="interactive-input"></select>
+            </div>
+
+            <!-- Precio de Lista -->
             <div class="row-flex highlight-bg">
                 <span>Precio de Lista:</span>
-                <strong>$304,900.00</strong>
+                <strong id="precio-lista">$0.00</strong>
             </div>
 
             <div class="alert-box warning-box">
                 <i class="fa-solid fa-circle-info"></i> ELIGE TU ENGANCHE Y LISTO¡¡¡¡
             </div>
 
+            <!-- Enganche -->
             <div class="form-group">
-                <label>ENGANCHE</label>
-                <div class="readonly-input input-bold">$68,491.66</div>
+                <label for="select-enganche">ENGANCHE</label>
+                <select id="select-enganche" class="interactive-input input-bold"></select>
             </div>
 
             <div class="row-flex highlight-bg mb-4">
@@ -86,26 +62,30 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
                 <label>MENSUALIDADES</label>
                 <div class="mes-row">
                     <span>72 meses</span>
-                    <strong>$6,499.19</strong>
+                    <strong>$0.00</strong>
                 </div>
                 <div class="mes-row">
                     <span>60 meses</span>
-                    <strong>$7,143.06</strong>
+                    <strong>$0.00</strong>
                 </div>
-                <div class="mes-row">
+                <div class="mes-row highlight-row">
                     <span>48 meses</span>
-                    <strong>$8,127.40</strong>
+                    <strong>$0.00</strong>
                 </div>
                 <div class="mes-row">
                     <span>36 meses</span>
-                    <strong>$9,793.90</strong>
+                    <strong>$0.00</strong>
                 </div>
             </div>
 
-            <!-- Botones -->
+            <!-- Botones de Acción -->
             <div class="action-buttons">
-                <button class="btn btn-white" id="btn-contact">¿Deseas más información? Contáctanos &nbsp; <i class="fa-solid fa-chevron-right"></i></button>
-                <button class="btn btn-dark" id="btn-pdf-main"><i class="fa-solid fa-file-pdf text-red"></i> Descargar Cotización (PDF)</button>
+                <button type="button" class="btn btn-white" id="btn-contact">
+                    ¿Deseas más información? Contáctanos &nbsp; <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button type="button" class="btn btn-dark" id="btn-pdf-main">
+                    <i class="fa-solid fa-file-pdf text-red"></i> Descargar Cotización (PDF)
+                </button>
             </div>
         </div>
 
@@ -121,38 +101,46 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
             <p class="modal-subtitle">Envía tu cotización directamente a Abel Ortiz Silva</p>
 
             <div class="form-group">
-                <label>Tu Nombre Completo</label>
+                <label>TU NOMBRE COMPLETO</label>
                 <input type="text" id="user-name" placeholder="Ej. Juan Pérez" class="interactive-input">
             </div>
+
             <div class="form-group">
-                <label>Tu Teléfono</label>
+                <label>TU TELÉFONO</label>
                 <input type="tel" id="user-phone" placeholder="Ej. 844 123 4567" class="interactive-input">
             </div>
 
-            <div class="summary-box">
-                <p><strong>Unidad:</strong> K3 SEDAN</p>
-                <p><strong>Versión:</strong> L TM</p>
-                <p><strong>Enganche:</strong> $68,491.66</p>
-                <p><strong>Mensualidad (48m):</strong> $8,127.40</p>
+            <!-- Resumen exacto del cotizador en vivo -->
+            <div class="summary-box" id="modal-summary">
+                <p><strong>Unidad:</strong> <span id="summary-unidad">K3 SEDAN</span></p>
+                <p><strong>Versión:</strong> <span id="summary-version">L TM</span></p>
+                <p><strong>Enganche:</strong> <span id="summary-enganche">$0.00</span></p>
+                <p><strong>Mensualidad (48m):</strong> <span id="summary-mensualidad">$0.00</span></p>
             </div>
 
             <div class="modal-buttons">
-                <button class="btn btn-whatsapp" id="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
-                <button class="btn btn-email" id="btn-email"><i class="fa-regular fa-envelope"></i> Enviar por Correo</button>
-                <button class="btn btn-pdf-red" id="btn-pdf-modal"><i class="fa-solid fa-file-pdf"></i> Descargar PDF</button>
+                <button type="button" class="btn btn-whatsapp" id="btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
+                </button>
+                <button type="button" class="btn btn-email" id="btn-email">
+                    <i class="fa-regular fa-envelope"></i> Enviar por Correo
+                </button>
+                <button type="button" class="btn btn-pdf-red" id="btn-pdf-modal">
+                    <i class="fa-solid fa-file-pdf"></i> Descargar PDF
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ==================== PLANTILLA PARA EL PDF (TEMA CLARO) ==================== -->
-    <div id="pdf-template-container" class="pdf-print-area">
+    <!-- ==================== PLANTILLA PARA IMPRESIÓN Y PDF ==================== -->
+    <div id="pdf-template-container">
         <div class="pdf-header">
             <div class="pdf-title-area">
                 <h1>KIA MAX SALTILLO</h1>
                 <p>Cotización de Financiamiento</p>
             </div>
             <div class="pdf-info-area">
-                <p><strong>Fecha:</strong> <span id="pdf-date">28 de septiembre de 2026</span></p>
+                <p><strong>Fecha:</strong> <span id="pdf-date"></span></p>
                 <p><strong>Asesor:</strong> Abel Ortiz Silva</p>
                 <p><strong>Teléfono:</strong> 844 806 7192</p>
             </div>
@@ -164,19 +152,19 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
         <table class="pdf-table">
             <tr>
                 <td class="text-gray">Vehículo / Modelo:</td>
-                <td class="text-right fw-bold">K3 SEDAN</td>
+                <td class="text-right fw-bold">-</td>
             </tr>
             <tr>
                 <td class="text-gray">Versión:</td>
-                <td class="text-right fw-bold">L TM</td>
+                <td class="text-right fw-bold">-</td>
             </tr>
             <tr>
                 <td class="text-gray">Precio de Lista:</td>
-                <td class="text-right fw-bold">$304,900.00</td>
+                <td class="text-right fw-bold">$0.00</td>
             </tr>
             <tr>
                 <td class="text-gray">Enganche Solicitado:</td>
-                <td class="text-right fw-bold text-teal">$68,491.66</td>
+                <td class="text-right fw-bold text-teal">$0.00</td>
             </tr>
             <tr>
                 <td class="text-gray">Tasa Anual:</td>
@@ -199,19 +187,19 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
             <tbody>
                 <tr>
                     <td>72 Meses</td>
-                    <td class="text-right fw-bold">$6,499.19</td>
+                    <td class="text-right fw-bold">$0.00</td>
                 </tr>
                 <tr>
                     <td>60 Meses</td>
-                    <td class="text-right fw-bold">$7,143.06</td>
+                    <td class="text-right fw-bold">$0.00</td>
                 </tr>
                 <tr class="highlight-row">
                     <td><strong>48 Meses (Recomendado)</strong></td>
-                    <td class="text-right fw-bold">$8,127.40</td>
+                    <td class="text-right fw-bold">$0.00</td>
                 </tr>
                 <tr>
                     <td>36 Meses</td>
-                    <td class="text-right fw-bold">$9,793.90</td>
+                    <td class="text-right fw-bold">$0.00</td>
                 </tr>
             </tbody>
         </table>
@@ -222,7 +210,7 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
         </div>
     </div>
 
-    <!-- Script principal -->
+    <!-- Script principal JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

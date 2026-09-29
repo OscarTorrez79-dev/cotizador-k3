@@ -1,108 +1,209 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================================
-    // CONFIGURACIÓN DE GOOGLE SHEETS
+    // BASE DE DATOS COMPLETA DESDE EXCEL DE GOOGLE SHEETS
     // =========================================================================
-    const SPREADSHEET_ID = '17zuCJ7CvgW7VkZTbRKApn3lzXIIUH-HF';
-    const GIDS = {
-        TIPO_AUTO: '1686283719',
-        UNIDADES: '1110558341',
-        VERSIONES: '381280636',
-        COTIZACIONES: '679410401'
+    const vehiculosData = {
+        "AUTOMÓVIL": {
+            "K3 SEDAN": {
+                "L TM": {
+                    precio: 304900,
+                    enganches: [68491.66, 82516.60, 111955.85]
+                },
+                "LX TM": {
+                    precio: 358600,
+                    enganches: [60457.12, 80457.12, 100457.12]
+                },
+                "LX TA": {
+                    precio: 372600,
+                    enganches: [75000.00, 95000.00, 115000.00]
+                },
+                "EX TA": {
+                    precio: 400300,
+                    enganches: [80000.00, 100000.00, 120000.00]
+                },
+                "EXPACK TA": {
+                    precio: 435900,
+                    enganches: [87000.00, 110000.00, 130000.00]
+                }
+            },
+            "K3 HATCHBACK": {
+                "LX TM": {
+                    precio: 358600,
+                    enganches: [80000.00, 100000.00, 120000.00]
+                },
+                "EX TA": {
+                    precio: 400300,
+                    enganches: [90000.00, 110000.00, 130000.00]
+                },
+                "EXPACK TA": {
+                    precio: 435900,
+                    enganches: [98000.00, 120000.00, 140000.00]
+                },
+                "GTLINE TA": {
+                    precio: 475600,
+                    enganches: [105000.00, 130000.00, 150000.00]
+                }
+            },
+            "K4 SEDAN": {
+                "LX TM": {
+                    precio: 398400,
+                    enganches: [89000.00, 110000.00, 130000.00]
+                },
+                "LX TA": {
+                    precio: 415000,
+                    enganches: [93000.00, 115000.00, 135000.00]
+                },
+                "EX TA": {
+                    precio: 445000,
+                    enganches: [100000.00, 125000.00, 145000.00]
+                },
+                "GTLINE TA": {
+                    precio: 485000,
+                    enganches: [110000.00, 135000.00, 155000.00]
+                }
+            }
+        },
+        "SUV": {
+            "SONET": {
+                "LX TM": {
+                    precio: 398400,
+                    enganches: [86356.18, 100000.00, 120000.00]
+                },
+                "LX TA": {
+                    precio: 418400,
+                    enganches: [92000.00, 110000.00, 130000.00]
+                },
+                "EX TA": {
+                    precio: 448400,
+                    enganches: [99000.00, 120000.00, 140000.00]
+                },
+                "SX TA": {
+                    precio: 488400,
+                    enganches: [108000.00, 130000.00, 150000.00]
+                }
+            },
+            "SELTOS": {
+                "LX": {
+                    precio: 449900,
+                    enganches: [99000.00, 120000.00, 140000.00]
+                },
+                "EX": {
+                    precio: 489900,
+                    enganches: [108000.00, 130000.00, 150000.00]
+                },
+                "EXPACK": {
+                    precio: 529900,
+                    enganches: [116000.00, 140000.00, 160000.00]
+                },
+                "SX": {
+                    precio: 569900,
+                    enganches: [125000.00, 150000.00, 170000.00]
+                }
+            },
+            "SPORTAGE": {
+                "EX TA": {
+                    precio: 594900,
+                    enganches: [130000.00, 155000.00, 180000.00]
+                },
+                "EXPACK TA": {
+                    precio: 644900,
+                    enganches: [142000.00, 170000.00, 195000.00]
+                },
+                "SX TURBO": {
+                    precio: 694900,
+                    enganches: [153000.00, 180000.00, 210000.00]
+                },
+                "SXL": {
+                    precio: 734900,
+                    enganches: [162000.00, 190000.00, 220000.00]
+                }
+            },
+            "SORENTO": {
+                "EX TA": {
+                    precio: 789900,
+                    enganches: [174000.00, 200000.00, 230000.00]
+                },
+                "EXPACK": {
+                    precio: 849900,
+                    enganches: [187000.00, 215000.00, 250000.00]
+                },
+                "SXL": {
+                    precio: 909900,
+                    enganches: [200000.00, 230000.00, 270000.00]
+                }
+            }
+        },
+        "HÍBRIDOS Y ELÉCTRICOS": {
+            "NIRO": {
+                "EX": {
+                    precio: 689700,
+                    enganches: [186645.07, 253281.82, 319918.56]
+                }
+            },
+            "SELTOS HIBRIDA": {
+                "EX HEV": {
+                    precio: 549900,
+                    enganches: [121000.00, 145000.00, 170000.00]
+                }
+            },
+            "SPORTAGE HEV": {
+                "SXL HEV": {
+                    precio: 814900,
+                    enganches: [180000.00, 210000.00, 250000.00]
+                }
+            },
+            "EV3": {
+                "GT LINE": {
+                    precio: 799900,
+                    enganches: [175000.00, 205000.00, 240000.00]
+                }
+            }
+        }
     };
 
-    // Elementos DOM
+    // Referencias DOM
     const selectTipo = document.getElementById('select-tipo');
     const selectUnidad = document.getElementById('select-unidad');
     const selectVersion = document.getElementById('select-version');
+    const selectEnganche = document.getElementById('select-enganche');
     const precioListaEl = document.getElementById('precio-lista');
-    const inputEnganche = document.getElementById('input-enganche');
     const mesRows = document.querySelectorAll('.mes-row strong');
 
-    // Botones de PDF y Contacto
-    const btnPdfMain = document.getElementById('btn-pdf-main');
-    const btnPdfModal = document.getElementById('btn-pdf-modal');
+    // Elementos del Modal
     const btnContact = document.getElementById('btn-contact');
     const modal = document.getElementById('contact-modal');
     const btnClose = document.getElementById('close-modal');
     const btnWhatsapp = document.getElementById('btn-whatsapp');
     const btnEmail = document.getElementById('btn-email');
+    const btnPdfModal = document.getElementById('btn-pdf-modal');
+    const btnPdfMain = document.getElementById('btn-pdf-main');
 
-    // BASE DE DATOS COMPLETA DE RESPALDO (Incluye todas las unidades y versiones)
-    let vehiculosData = {
-        "AUTOMÓVIL": {
-            "K3 SEDAN": {
-                "L TM": { precio: 304900, engancheMin: 68491.66 },
-                "LX TM": { precio: 358600, engancheMin: 82516.60 },
-                "L TA": { precio: 335500, engancheMin: 75000.00 },
-                "LX TA": { precio: 372600, engancheMin: 83000.00 },
-                "EX TA": { precio: 400300, engancheMin: 90000.00 },
-                "EXPACK TA": { precio: 435900, engancheMin: 98000.00 }
-            },
-            "K3 HATCHBACK": {
-                "LX TM": { precio: 358600, engancheMin: 80000.00 },
-                "EX TA": { precio: 400300, engancheMin: 90000.00 },
-                "EXPACK TA": { precio: 435900, engancheMin: 98000.00 },
-                "GTLINE TA": { precio: 475600, engancheMin: 105000.00 }
-            },
-            "K4 SEDAN": {
-                "LX TM": { precio: 398400, engancheMin: 89000.00 },
-                "LX TA": { precio: 415000, engancheMin: 93000.00 },
-                "EX TA": { precio: 445000, engancheMin: 100000.00 },
-                "GTLINE TA": { precio: 485000, engancheMin: 110000.00 }
-            }
-        },
-        "SUV": {
-            "SONET": {
-                "LX TM": { precio: 398400, engancheMin: 86356.18 },
-                "LX TA": { precio: 418400, engancheMin: 92000.00 },
-                "EX TA": { precio: 448400, engancheMin: 99000.00 },
-                "SX TA": { precio: 488400, engancheMin: 108000.00 }
-            },
-            "SELTOS": {
-                "LX": { precio: 449900, engancheMin: 99000.00 },
-                "EX": { precio: 489900, engancheMin: 108000.00 },
-                "EXPACK": { precio: 529900, engancheMin: 116000.00 },
-                "SX": { precio: 569900, engancheMin: 125000.00 }
-            },
-            "SPORTAGE": {
-                "EX TA": { precio: 594900, engancheMin: 130000.00 },
-                "EXPACK TA": { precio: 644900, engancheMin: 142000.00 },
-                "SX TURBO": { precio: 694900, engancheMin: 153000.00 },
-                "SXL": { precio: 734900, engancheMin: 162000.00 }
-            },
-            "SPORTAGE HEV": {
-                "SXL HEV": { precio: 814900, engancheMin: 180000.00 }
-            },
-            "SORENTO": {
-                "EX TA": { precio: 789900, engancheMin: 174000.00 },
-                "EXPACK": { precio: 849900, engancheMin: 187000.00 },
-                "SXL": { precio: 909900, engancheMin: 200000.00 }
-            }
-        },
-        "HÍBRIDOS Y ELÉCTRICOS": {
-            "NIRO": {
-                "EX": { precio: 679900, engancheMin: 150000.00 }
-            },
-            "SELTOS HIBRIDA": {
-                "EX HEV": { precio: 549900, engancheMin: 121000.00 }
-            },
-            "EV3": {
-                "GT LINE": { precio: 799900, engancheMin: 175000.00 }
-            }
-        }
-    };
-
-    // --- CÁLCULOS FINANCIEROS Y FORMATO ---
+    // Formateador de moneda
     const formatearMoneda = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto);
 
+    // Calcular Mensualidad con tasa fija 12.99%
     const calcularMensualidad = (montoFinanciar, plazoMeses, tasaAnual = 0.1299) => {
         const tasaMensual = tasaAnual / 12;
         return (montoFinanciar * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazoMeses));
     };
 
+    // Actualizar Resumen en Vivo dentro del Modal
+    const actualizarResumenModal = (unidad, version, enganche, mensualidad48) => {
+        const sumUnidad = document.getElementById('summary-unidad');
+        const sumVersion = document.getElementById('summary-version');
+        const sumEnganche = document.getElementById('summary-enganche');
+        const sumMensualidad = document.getElementById('summary-mensualidad');
+
+        if (sumUnidad) sumUnidad.innerText = unidad;
+        if (sumVersion) sumVersion.innerText = version;
+        if (sumEnganche) sumEnganche.innerText = formatearMoneda(enganche);
+        if (sumMensualidad) sumMensualidad.innerText = formatearMoneda(mensualidad48);
+    };
+
+    // Lógica Principal de Cálculo
     const actualizarCalculos = () => {
-        if (!selectTipo || !selectUnidad || !selectVersion) return;
+        if (!selectTipo || !selectUnidad || !selectVersion || !selectEnganche) return;
 
         const tipo = selectTipo.value;
         const unidad = selectUnidad.value;
@@ -115,16 +216,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (precioListaEl) precioListaEl.innerText = formatearMoneda(precio);
 
-        let engancheVal = parseFloat(inputEnganche.value) || info.engancheMin;
+        const engancheVal = parseFloat(selectEnganche.value) || (info.enganches ? info.enganches[0] : 0);
         const montoFinanciar = precio - engancheVal;
 
         const plazos = [72, 60, 48, 36];
+        let mensualidad48 = 0;
+
         plazos.forEach((plazo, index) => {
+            const pago = calcularMensualidad(montoFinanciar, plazo);
+            if (plazo === 48) mensualidad48 = pago;
             if (mesRows[index]) {
-                mesRows[index].innerText = formatearMoneda(calcularMensualidad(montoFinanciar, plazo));
+                mesRows[index].innerText = formatearMoneda(pago);
             }
         });
 
+        // Actualizar Resumen en Modal y Plantilla de PDF
+        actualizarResumenModal(unidad, version, engancheVal, mensualidad48);
         actualizarPlantillaPDF(unidad, version, precio, engancheVal, montoFinanciar);
     };
 
@@ -142,14 +249,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pdfMesTds = document.querySelectorAll('#pdf-template-container .pdf-table-mensualidades td.fw-bold');
         const plazos = [72, 60, 48, 36];
+
         plazos.forEach((plazo, index) => {
             if (pdfMesTds[index]) {
-                pdfMesTds[index].innerText = formatearMoneda(calcularMensualidad(montoFinanciar, plazo));
+                const pago = calcularMensualidad(montoFinanciar, plazo);
+                pdfMesTds[index].innerText = formatearMoneda(pago);
             }
         });
     };
 
-    // --- CONTROLES DE LOS SELECTORES EN CASCADA ---
+    // Llenar Selects en Cascada
     const poblarSelectTipos = () => {
         if (!selectTipo) return;
         selectTipo.innerHTML = '';
@@ -192,65 +301,90 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const info = vehiculosData[tipoSeleccionado]?.[unidadSeleccionada]?.[selectVersion.value];
-        if (info && inputEnganche) {
-            inputEnganche.value = info.engancheMin;
+        cargarEnganches();
+    };
+
+    const cargarEnganches = () => {
+        if (!selectEnganche) return;
+        const tipoSeleccionado = selectTipo.value;
+        const unidadSeleccionada = selectUnidad.value;
+        const versionSeleccionada = selectVersion.value;
+
+        selectEnganche.innerHTML = '';
+
+        const info = vehiculosData[tipoSeleccionado]?.[unidadSeleccionada]?.[versionSeleccionada];
+        if (info && info.enganches) {
+            info.enganches.forEach(monto => {
+                const opt = document.createElement('option');
+                opt.value = monto;
+                opt.textContent = formatearMoneda(monto);
+                selectEnganche.appendChild(opt);
+            });
         }
 
         actualizarCalculos();
     };
 
-    // Registrar eventos de cambio
+    // Escuchar cambios
     if (selectTipo) selectTipo.addEventListener('change', cargarUnidades);
     if (selectUnidad) selectUnidad.addEventListener('change', cargarVersiones);
-    if (selectVersion) selectVersion.addEventListener('change', actualizarCalculos);
-    if (inputEnganche) inputEnganche.addEventListener('input', actualizarCalculos);
+    if (selectVersion) selectVersion.addEventListener('change', cargarEnganches);
+    if (selectEnganche) selectEnganche.addEventListener('change', actualizarCalculos);
 
-    // Inicializar selectores
-    poblarSelectTipos();
-
-    // --- IMPRESIÓN Y PDF ---
+    // Impresión PDF
     const ImprimirCotizacion = () => {
         const pdfDateEl = document.getElementById('pdf-date');
         if (pdfDateEl) {
             pdfDateEl.innerText = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
         }
+        if (modal) modal.classList.remove('active');
         window.print();
     };
 
     if (btnPdfMain) btnPdfMain.addEventListener('click', ImprimirCotizacion);
     if (btnPdfModal) btnPdfModal.addEventListener('click', ImprimirCotizacion);
 
-    // === LÓGICA DEL MODAL DE CONTACTO ===
+    // Modal de Contacto
     if (btnContact && modal) {
         btnContact.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.classList.add('active'); // Muestra el modal
+            modal.classList.add('active');
         });
     }
 
     if (btnClose && modal) {
         btnClose.addEventListener('click', () => {
-            modal.classList.remove('active'); // Cierra el modal
+            modal.classList.remove('active');
         });
     }
 
     if (modal) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                modal.classList.remove('active'); // Cierra al hacer clic afuera
+                modal.classList.remove('active');
             }
         });
     }
 
-    // Lógica de envio por WhatsApp y Correo
+    // Armar mensaje formateado para enviar al Asesor
     const getMensajeContacto = () => {
         const inputNombre = document.getElementById('user-name');
-        const nombre = (inputNombre && inputNombre.value.trim() !== '') ? inputNombre.value.trim() : 'Cliente';
-        const unidad = selectUnidad ? selectUnidad.value : 'KIA';
-        const version = selectVersion ? selectVersion.value : '';
+        const inputPhone = document.getElementById('user-phone');
 
-        return encodeURIComponent(`Hola Abel, mi nombre es ${nombre}. Estoy interesado en cotizar un KIA ${unidad} (${version}).`);
+        const nombre = (inputNombre && inputNombre.value.trim() !== '') ? inputNombre.value.trim() : 'Cliente';
+        const telefono = (inputPhone && inputPhone.value.trim() !== '') ? inputPhone.value.trim() : 'No proporcionado';
+
+        const unidad = selectUnidad ? selectUnidad.value : '';
+        const version = selectVersion ? selectVersion.value : '';
+        const engancheTxt = document.getElementById('summary-enganche')?.innerText || '$0.00';
+        const mensualidadTxt = document.getElementById('summary-mensualidad')?.innerText || '$0.00';
+
+        const mensaje = `Hola Abel, mi nombre es ${nombre} (Tel: ${telefono}).
+Estoy interesado en la cotización del KIA ${unidad} (${version}).
+- Enganche: ${engancheTxt}
+- Mensualidad (48m): ${mensualidadTxt}`;
+
+        return encodeURIComponent(mensaje);
     };
 
     if (btnWhatsapp) {
@@ -267,4 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `mailto:${correoAsesor}?subject=${asunto}&body=${getMensajeContacto()}`;
         });
     }
+
+    // Inicializar
+    poblarSelectTipos();
 });
