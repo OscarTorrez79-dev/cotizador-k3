@@ -1,10 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================================
-    // 1. URL DE TU GOOGLE SHEET PUBLICADO
-    // Asegúrate de ir en Sheets a: Archivo > Compartir > Publicar en la web > CSV
+    // CONFIGURACIÓN DE GOOGLE SHEETS
     // =========================================================================
-    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQm8TjsEN4AnRugDL5CjL0-KLcRQiAyTvkSuzofhZz8hEuReFhZG_IAVNYOMojcrQ/pub?gid=679410401&single=true&output=csv';
+    const SPREADSHEET_ID = '17zuCJ7CvgW7VkZTbRKApn3lzXIIUH-HF';
+    const GIDS = {
+        TIPO_AUTO: '1686283719',
+        UNIDADES: '1110558341',
+        VERSIONES: '381280636',
+        COTIZACIONES: '679410401'
+    };
 
     // Elementos DOM
     const selectTipo = document.getElementById('select-tipo');
@@ -14,77 +19,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputEnganche = document.getElementById('input-enganche');
     const mesRows = document.querySelectorAll('.mes-row strong');
 
-    // Estructura de datos por defecto (evita congelamientos si falla la red)
+    // Botones de PDF y Contacto
+    const btnPdfMain = document.getElementById('btn-pdf-main');
+    const btnPdfModal = document.getElementById('btn-pdf-modal');
+    const btnContact = document.getElementById('btn-contact');
+    const modal = document.getElementById('contact-modal');
+    const btnClose = document.getElementById('close-modal');
+    const btnWhatsapp = document.getElementById('btn-whatsapp');
+    const btnEmail = document.getElementById('btn-email');
+
+    // BASE DE DATOS COMPLETA DE RESPALDO (Incluye todas las unidades y versiones)
     let vehiculosData = {
         "AUTOMÓVIL": {
             "K3 SEDAN": {
                 "L TM": { precio: 304900, engancheMin: 68491.66 },
-                "EX AT": { precio: 342900, engancheMin: 76900.00 }
+                "LX TM": { precio: 358600, engancheMin: 82516.60 },
+                "L TA": { precio: 335500, engancheMin: 75000.00 },
+                "LX TA": { precio: 372600, engancheMin: 83000.00 },
+                "EX TA": { precio: 400300, engancheMin: 90000.00 },
+                "EXPACK TA": { precio: 435900, engancheMin: 98000.00 }
+            },
+            "K3 HATCHBACK": {
+                "LX TM": { precio: 358600, engancheMin: 80000.00 },
+                "EX TA": { precio: 400300, engancheMin: 90000.00 },
+                "EXPACK TA": { precio: 435900, engancheMin: 98000.00 },
+                "GTLINE TA": { precio: 475600, engancheMin: 105000.00 }
+            },
+            "K4 SEDAN": {
+                "LX TM": { precio: 398400, engancheMin: 89000.00 },
+                "LX TA": { precio: 415000, engancheMin: 93000.00 },
+                "EX TA": { precio: 445000, engancheMin: 100000.00 },
+                "GTLINE TA": { precio: 485000, engancheMin: 110000.00 }
+            }
+        },
+        "SUV": {
+            "SONET": {
+                "LX TM": { precio: 398400, engancheMin: 86356.18 },
+                "LX TA": { precio: 418400, engancheMin: 92000.00 },
+                "EX TA": { precio: 448400, engancheMin: 99000.00 },
+                "SX TA": { precio: 488400, engancheMin: 108000.00 }
+            },
+            "SELTOS": {
+                "LX": { precio: 449900, engancheMin: 99000.00 },
+                "EX": { precio: 489900, engancheMin: 108000.00 },
+                "EXPACK": { precio: 529900, engancheMin: 116000.00 },
+                "SX": { precio: 569900, engancheMin: 125000.00 }
+            },
+            "SPORTAGE": {
+                "EX TA": { precio: 594900, engancheMin: 130000.00 },
+                "EXPACK TA": { precio: 644900, engancheMin: 142000.00 },
+                "SX TURBO": { precio: 694900, engancheMin: 153000.00 },
+                "SXL": { precio: 734900, engancheMin: 162000.00 }
+            },
+            "SPORTAGE HEV": {
+                "SXL HEV": { precio: 814900, engancheMin: 180000.00 }
+            },
+            "SORENTO": {
+                "EX TA": { precio: 789900, engancheMin: 174000.00 },
+                "EXPACK": { precio: 849900, engancheMin: 187000.00 },
+                "SXL": { precio: 909900, engancheMin: 200000.00 }
+            }
+        },
+        "HÍBRIDOS Y ELÉCTRICOS": {
+            "NIRO": {
+                "EX": { precio: 679900, engancheMin: 150000.00 }
+            },
+            "SELTOS HIBRIDA": {
+                "EX HEV": { precio: 549900, engancheMin: 121000.00 }
+            },
+            "EV3": {
+                "GT LINE": { precio: 799900, engancheMin: 175000.00 }
             }
         }
     };
 
-    // --- PARSER SEGURO DE CSV ---
-    const parseCSV = (csvText) => {
-        try {
-            const lines = csvText.split(/\r\n|\n/);
-            const data = {};
-
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                
-                // Dividir respetando comillas
-                const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.trim().replace(/^"|"$/g, ''));
-                if (cols.length < 4) continue;
-
-                const tipo = cols[0].toUpperCase();
-                const unidad = cols[1].toUpperCase();
-                const version = cols[2].toUpperCase();
-                const precio = parseFloat(cols[3].replace(/[^0-9.-]+/g, '')) || 0;
-                const engancheMin = cols[4] ? parseFloat(cols[4].replace(/[^0-9.-]+/g, '')) : (precio * 0.20);
-
-                if (!tipo || !unidad || !version || precio === 0) continue;
-
-                if (!data[tipo]) data[tipo] = {};
-                if (!data[tipo][unidad]) data[tipo][unidad] = {};
-
-                data[tipo][unidad][version] = { precio, engancheMin };
-            }
-
-            return Object.keys(data).length > 0 ? data : null;
-        } catch (e) {
-            console.error('Error parseando CSV:', e);
-            return null;
-        }
-    };
-
-    // --- CARGA ASÍNCRONA CON TIMEOUT DE SEGURIDAD ---
-    const cargarDatos = async () => {
-        if (!SHEET_CSV_URL || SHEET_CSV_URL === 'TU_URL_DE_GOOGLE_SHEETS_AQUI') {
-            poblarSelectTipos();
-            return;
-        }
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000); // Cancela si tarda más de 4s
-
-        try {
-            const response = await fetch(SHEET_CSV_URL, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            const text = await response.text();
-            
-            const parsed = parseCSV(text);
-            if (parsed) {
-                vehiculosData = parsed;
-            }
-        } catch (err) {
-            console.warn('No se pudo consultar Google Sheets o expiró el tiempo. Usando base local de respaldo.');
-        }
-
-        poblarSelectTipos();
-    };
-
-    // --- CÁLCULOS FINANCIEROS Y PDF ---
+    // --- CÁLCULOS FINANCIEROS Y FORMATO ---
     const formatearMoneda = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto);
 
     const calcularMensualidad = (montoFinanciar, plazoMeses, tasaAnual = 0.1299) => {
@@ -140,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- CONTROLES Y CASCADA ---
+    // --- CONTROLES DE LOS SELECTORES EN CASCADA ---
     const poblarSelectTipos = () => {
         if (!selectTipo) return;
         selectTipo.innerHTML = '';
@@ -191,19 +200,16 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarCalculos();
     };
 
-    // Eventos
+    // Registrar eventos de cambio
     if (selectTipo) selectTipo.addEventListener('change', cargarUnidades);
     if (selectUnidad) selectUnidad.addEventListener('change', cargarVersiones);
     if (selectVersion) selectVersion.addEventListener('change', actualizarCalculos);
     if (inputEnganche) inputEnganche.addEventListener('input', actualizarCalculos);
 
-    // Inicializar
-    cargarDatos();
+    // Inicializar selectores
+    poblarSelectTipos();
 
-    // --- IMPRESIÓN Y MODAL ---
-    const btnPdfMain = document.getElementById('btn-pdf-main');
-    const btnPdfModal = document.getElementById('btn-pdf-modal');
-
+    // --- IMPRESIÓN Y PDF ---
     const ImprimirCotizacion = () => {
         const pdfDateEl = document.getElementById('pdf-date');
         if (pdfDateEl) {
@@ -215,11 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnPdfMain) btnPdfMain.addEventListener('click', ImprimirCotizacion);
     if (btnPdfModal) btnPdfModal.addEventListener('click', ImprimirCotizacion);
 
-// === LÓGICA DEL MODAL DE CONTACTO ===
-    const btnContact = document.getElementById('btn-contact');
-    const modal = document.getElementById('contact-modal');
-    const btnClose = document.getElementById('close-modal');
-
+    // === LÓGICA DEL MODAL DE CONTACTO ===
     if (btnContact && modal) {
         btnContact.addEventListener('click', (e) => {
             e.preventDefault();
@@ -238,6 +240,31 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modal) {
                 modal.classList.remove('active'); // Cierra al hacer clic afuera
             }
+        });
+    }
+
+    // Lógica de envio por WhatsApp y Correo
+    const getMensajeContacto = () => {
+        const inputNombre = document.getElementById('user-name');
+        const nombre = (inputNombre && inputNombre.value.trim() !== '') ? inputNombre.value.trim() : 'Cliente';
+        const unidad = selectUnidad ? selectUnidad.value : 'KIA';
+        const version = selectVersion ? selectVersion.value : '';
+
+        return encodeURIComponent(`Hola Abel, mi nombre es ${nombre}. Estoy interesado en cotizar un KIA ${unidad} (${version}).`);
+    };
+
+    if (btnWhatsapp) {
+        btnWhatsapp.addEventListener('click', () => {
+            const telefonoAsesor = '528448067192';
+            window.open(`https://wa.me/${telefonoAsesor}?text=${getMensajeContacto()}`, '_blank');
+        });
+    }
+
+    if (btnEmail) {
+        btnEmail.addEventListener('click', () => {
+            const correoAsesor = 'abel.ortiz@kiamax.com';
+            const asunto = encodeURIComponent('Cotización de vehículo KIA');
+            window.location.href = `mailto:${correoAsesor}?subject=${asunto}&body=${getMensajeContacto()}`;
         });
     }
 });
