@@ -39,19 +39,27 @@ src="https://www.facebook.com/tr?id=1597860704877766&ev=PageView&noscript=1"
         </header>
 
         <div class="card-container">
-            <!-- Sección Vehículo -->
-            <div class="form-group">
-                <label>TIPO DE VEHÍCULO</label>
-                <div class="readonly-input">AUTOMÓVIL</div>
-            </div>
-            <div class="form-group">
-                <label>UNIDAD</label>
-                <div class="readonly-input">K3 SEDAN</div>
-            </div>
-            <div class="form-group">
-                <label>VERSIÓN</label>
-                <div class="readonly-input">L TM</div>
-            </div>
+    <!-- Sección Vehículo -->
+    <div class="form-group">
+        <label for="select-tipo">TIPO DE VEHÍCULO</label>
+        <select id="select-tipo" class="interactive-input">
+            <!-- Cargado dinámicamente por JS / Google Sheets -->
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="select-unidad">UNIDAD</label>
+        <select id="select-unidad" class="interactive-input">
+            <!-- Cargado dinámicamente por JS / Google Sheets -->
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="select-version">VERSIÓN</label>
+        <select id="select-version" class="interactive-input">
+            <!-- Cargado dinámicamente por JS / Google Sheets -->
+        </select>
+    </div>
 
             <!-- Precios -->
             <div class="row-flex highlight-bg">
