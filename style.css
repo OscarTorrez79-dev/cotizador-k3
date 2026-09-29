@@ -1,279 +1,302 @@
+/* ==================== VARIABLES Y RESET ==================== */
+:root {
+    --bg-main: #000000;
+    --bg-card: #141414;
+    --bg-input: #1f1f1f;
+    --bg-modal: #1e1e24;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a0;
+    --border-color: #2a2a2a;
+    --kia-red: #d3112b;
+    --accent-green: #10b981;
+    --alert-yellow-bg: #2a2205;
+    --alert-yellow-text: #eab308;
+}
+
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-  background-color: #0b0b0b;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+    background-color: var(--bg-main);
+    color: var(--text-white);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-.cotizador-container {
-  background-color: #141414;
-  width: 100%;
-  max-width: 480px;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-  border: 1px solid #222;
+/* ==================== UI PRINCIPAL ==================== */
+.app-wrapper {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px 15px;
 }
 
-.header-cotizador {
-  text-align: center;
-  margin-bottom: 24px;
+.app-header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
-.kia-logo {
-  color: #e51937;
-  font-weight: 900;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
+.brand-title {
+    color: var(--kia-red);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
 }
 
-.header-title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 4px 0;
+.main-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
 .asesor-info {
-  font-size: 0.85rem;
-  color: #a0a0a0;
-  margin-top: 4px;
-  font-weight: 500;
+    color: var(--text-gray);
+    font-size: 13px;
 }
 
+.card-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+/* ==================== FORMULARIOS Y CAJAS ==================== */
 .form-group {
-  margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #888;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
+    display: block;
+    color: var(--text-gray);
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 600;
 }
 
-select, input {
-  width: 100%;
-  padding: 12px 14px;
-  background-color: #1f1f1f;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s;
+.readonly-input {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
 }
 
-select:focus, input:focus {
-  border-color: #e51937;
+.input-bold {
+    font-weight: bold;
+    font-size: 18px;
 }
 
-.precio-box {
-  background-color: #1f1f1f;
-  padding: 14px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  font-weight: 700;
+.interactive-input {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    border-radius: 8px;
+    color: var(--text-white);
+    font-size: 15px;
+    outline: none;
+}
+.interactive-input:focus { border-color: #555; }
+
+.row-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 10px;
 }
 
-#precio-monto {
-  font-size: 1.25rem;
-  color: #ffffff;
+.highlight-bg {
+    background-color: transparent;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    margin: 20px 0;
 }
 
-.observacion-banner {
-  background-color: #2b250d;
-  border: 1px solid #735d14;
-  color: #ffd866;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 16px;
+.text-green { color: var(--accent-green); }
+.text-red { color: var(--kia-red); }
+.text-muted { color: var(--text-gray); }
+
+.warning-box {
+    background-color: var(--alert-yellow-bg);
+    color: var(--alert-yellow-text);
+    padding: 12px;
+    border: 1px solid #42350a;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
-.tasa-box {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #aaa;
-  margin-bottom: 20px;
-  padding: 0 4px;
+/* ==================== MENSUALIDADES ==================== */
+.mensualidades-section {
+    margin-top: 25px;
 }
 
-.seccion-titulo {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #888;
-  margin-bottom: 12px;
-  text-transform: uppercase;
+.mensualidades-section label {
+    color: var(--text-gray);
+    font-size: 11px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 15px;
 }
 
-.mensualidades-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 24px;
+.mes-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
 }
+.mes-row:last-child { border-bottom: none; margin-bottom: 25px; }
 
-.card-plazo {
-  background-color: #1f1f1f;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #333;
-  text-align: center;
-}
-
-.card-plazo.destacado {
-  border-color: #2e7d32;
-  background-color: #122414;
-}
-
-.plazo-meses {
-  font-size: 0.75rem;
-  color: #aaa;
-  margin-bottom: 4px;
-}
-
-.plazo-monto {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.acciones-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
+/* ==================== BOTONES ==================== */
 .btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  font-size: 0.9rem;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.2s;
 }
-
 .btn:hover { opacity: 0.9; }
-.btn-pdf { background-color: #ffffff; color: #000; }
-.btn-whatsapp { background-color: #25d366; color: #fff; }
-.btn-email { background-color: #4285f4; color: #fff; margin-top: 8px; }
 
-/* Modal */
+.btn-white { background-color: #ffffff; color: #000000; }
+.btn-dark { background-color: #1a1a1a; color: #ffffff; border: 1px solid #333; }
+.btn-whatsapp { background-color: #128c7e; color: #ffffff; }
+.btn-email { background-color: #333333; color: #ffffff; }
+.btn-pdf-red { background-color: #d32f2f; color: #ffffff; }
+
+.footer-terms {
+    text-align: center;
+    color: #555;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+/* ==================== MODAL ==================== */
 .modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
 }
 
-.modal-overlay.active { display: flex; }
-
-.modal-card {
-  background-color: #1e1e1e;
-  width: 90%;
-  max-width: 400px;
-  padding: 24px;
-  border-radius: 10px;
-  position: relative;
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.modal-close {
-  position: absolute;
-  top: 12px; right: 16px;
-  background: none; border: none;
-  color: #aaa; font-size: 1.5rem; cursor: pointer;
+.modal-content {
+    background-color: var(--bg-modal);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+    border: 1px solid #333;
 }
 
-.resumen-modal {
-  background-color: #141414;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin: 12px 0;
-  color: #ccc;
+.close-modal {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: none; border: none;
+    color: #888; font-size: 20px;
+    cursor: pointer;
 }
 
-/* Plantilla A4 Imprimible Exacta (Garantiza 1 sola hoja) */
-.pdf-printable-area {
-  display: none;
-  background-color: #ffffff;
-  color: #1a1a1a;
-  padding: 20mm 18mm;
-  font-family: Arial, Helvetica, sans-serif;
-  width: 210mm;
-  box-sizing: border-box;
+.modal-title { font-size: 20px; text-align: center; margin-bottom: 5px; }
+.modal-subtitle { font-size: 12px; color: var(--text-gray); text-align: center; margin-bottom: 25px; }
+
+.summary-box {
+    background-color: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+.summary-box p { display: flex; justify-content: space-between; margin-bottom: 5px; }
+
+/* ==================== ÁREA PARA GENERACIÓN DE PDF (OCULTA EN PANTALLA) ==================== */
+.pdf-print-area {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 800px; /* Ancho fijo para mantener la proporción del PDF */
+    background-color: #ffffff;
+    color: #000000;
+    padding: 40px 50px;
+    font-family: Arial, sans-serif;
 }
 
 .pdf-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
+
+.pdf-title-area h1 { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+.pdf-title-area p { font-size: 14px; color: #666; }
+
+.pdf-info-area { text-align: right; font-size: 12px; line-height: 1.6; }
+.pdf-info-area p { margin: 0; }
 
 .pdf-divider {
-  border: none;
-  border-top: 2px solid #1a1a1a;
-  margin: 15px 0;
+    border: none; border-top: 2px solid #000; margin: 15px 0 25px 0;
 }
 
-.pdf-seccion-title {
-  font-size: 14px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 4px;
-  margin-top: 15px;
-  color: #1a1a1a;
+.pdf-section-title {
+    font-size: 16px; font-weight: normal; margin-bottom: 15px; margin-top: 30px;
 }
 
-.pdf-table-details, .pdf-table-plazos {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  margin-top: 8px;
+.pdf-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
 }
 
-.pdf-table-details td, .pdf-table-plazos td, .pdf-table-plazos th {
-  padding: 8px 4px;
+.pdf-table td { padding: 12px 5px; border-bottom: 1px solid #eee; }
+.text-gray { color: #555; }
+.text-right { text-align: right; }
+.fw-bold { font-weight: bold; }
+.text-teal { color: #00897b; }
+
+.pdf-observacion {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 13px;
 }
 
-.pdf-table-details tr:nth-child(even), .pdf-table-plazos tr:nth-child(even) {
-  background-color: #f9f9f9;
+.pdf-table-mensualidades th {
+    padding: 12px 5px; border-bottom: 2px solid #ddd; font-size: 13px; font-weight: bold;
 }
-
-.pdf-table-plazos th {
-  border-bottom: 2px solid #333;
-  text-align: left;
-  padding-bottom: 6px;
+.pdf-table-mensualidades .highlight-row td {
+    background-color: #f9f9f9;
 }
+.text-left { text-align: left; }
 
-.pdf-observacion-box {
-  background-color: #fff9c4;
-  border: 1px solid #fbc02d;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 18px 0;
-  font-size: 12px;
-  color: #333;
+.pdf-footer {
+    margin-top: 40px; text-align: center; font-size: 10px; color: #888;
 }
