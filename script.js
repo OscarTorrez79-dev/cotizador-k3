@@ -214,4 +214,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnPdfMain) btnPdfMain.addEventListener('click', ImprimirCotizacion);
     if (btnPdfModal) btnPdfModal.addEventListener('click', ImprimirCotizacion);
+
+// === LÓGICA DEL MODAL DE CONTACTO ===
+    const btnContact = document.getElementById('btn-contact');
+    const modal = document.getElementById('contact-modal');
+    const btnClose = document.getElementById('close-modal');
+
+    if (btnContact && modal) {
+        btnContact.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active'); // Muestra el modal
+        });
+    }
+
+    if (btnClose && modal) {
+        btnClose.addEventListener('click', () => {
+            modal.classList.remove('active'); // Cierra el modal
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active'); // Cierra al hacer clic afuera
+            }
+        });
+    }
 });

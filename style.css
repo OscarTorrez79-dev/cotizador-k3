@@ -466,3 +466,67 @@ body {
         color: #777777 !important;
     }
 }
+/* ==================== ESTILOS EXACTOS DEL MODAL ==================== */
+.modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Esta clase la activa JavaScript al hacer clic */
+.modal-overlay.active {
+    display: flex !important;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    border: 1px solid #333;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.modal-title {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.modal-subtitle {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.summary-box {
+    background-color: #252525;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.summary-box p {
+    margin: 5px 0;
+}
